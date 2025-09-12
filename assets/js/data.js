@@ -1,12 +1,66 @@
 // Datos simulados para la tienda y contenidos
 window.CROC_DATA = {
   products: [
-    { id: 'kit-uno', name: 'Kit Principiante', price: 55, img: 'https://images.unsplash.com/photo-1581091014607-231ff0f9311d?q=80&w=1200&auto=format&fit=crop', password: 'KIT123', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'principiante' },
-    { id: 'kit-sensor', name: 'Kit Sensores', price: 75, img: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop', password: 'SEN456', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'intermedio' },
-    { id: 'kit-avanzado', name: 'Kit Avanzado', price: 82, img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop', password: 'ADV789', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'avanzado' },
-    { id: 'kit-mini', name: 'Kit Mini', price: 20, img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop', password: 'MIN111', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'principiante' },
-    { id: 'kit-arduino', name: 'Kit Arduino', price: 65, img: 'https://images.unsplash.com/photo-1581093588401-16ec4a6a7c9f?q=80&w=1200&auto=format&fit=crop', password: 'ARD222', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'intermedio' },
-    { id: 'kit-robot', name: 'Kit Robot Completo', price: 120, img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop', password: 'ROB333', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'avanzado' }
+    { 
+      id: 'kit-uno', 
+      name: 'Kit Principiante Arduino', 
+      price: 55, 
+      img: 'https://images.unsplash.com/photo-1581091014607-231ff0f9311d?q=80&w=1200&auto=format&fit=crop', 
+      password: 'KIT123', 
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', 
+      category: 'principiante',
+      description: 'Perfecto para iniciar en el mundo de la robótica. Incluye Arduino Uno, componentes básicos y guía completa.'
+    },
+    { 
+      id: 'kit-sensor', 
+      name: 'Kit de Sensores Avanzados', 
+      price: 75, 
+      img: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop', 
+      password: 'SEN456', 
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', 
+      category: 'intermedio',
+      description: 'Explora diferentes tipos de sensores: ultrasonido, infrarrojo, temperatura, humedad y más.'
+    },
+    { 
+      id: 'kit-avanzado', 
+      name: 'Kit Proyectos Avanzados', 
+      price: 82, 
+      img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop', 
+      password: 'ADV789', 
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', 
+      category: 'avanzado',
+      description: 'Para estudiantes experimentados. Incluye motores, servos, pantallas LCD y módulos avanzados.'
+    },
+    { 
+      id: 'kit-mini', 
+      name: 'Kit Mini Proyectos', 
+      price: 20, 
+      img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop', 
+      password: 'MIN111', 
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', 
+      category: 'principiante',
+      description: 'Kit compacto ideal para proyectos pequeños y experimentos básicos de electrónica.'
+    },
+    { 
+      id: 'kit-arduino', 
+      name: 'Kit Arduino Completo', 
+      price: 65, 
+      img: 'https://images.unsplash.com/photo-1581093588401-16ec4a6a7c9f?q=80&w=1200&auto=format&fit=crop', 
+      password: 'ARD222', 
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', 
+      category: 'intermedio',
+      description: 'Kit completo con Arduino, sensores, actuadores y todos los componentes necesarios para proyectos.'
+    },
+    { 
+      id: 'kit-robot', 
+      name: 'Kit Robot Humanoide', 
+      price: 120, 
+      img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop', 
+      password: 'ROB333', 
+      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ', 
+      category: 'avanzado',
+      description: 'Construye tu propio robot humanoide con múltiples servos, sensores y capacidades de movimiento.'
+    }
   ],
   
   // Sistema de millas/puntos

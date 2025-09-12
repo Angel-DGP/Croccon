@@ -27,8 +27,8 @@
     <main>
       <section class="page-header">
         <div class="container">
-          <h1>Tienda de Kits</h1>
-          <p>Descubre nuestros kits de robótica con contenido exclusivo</p>
+          <h1>Catálogo de Kits</h1>
+          <p>Explora nuestros kits de robótica y descubre qué contiene cada uno</p>
         </div>
       </section>
 
@@ -75,11 +75,23 @@
               <img src="${product.img}" alt="${product.name}">
               <div class="product-info">
                 <h3>${product.name}</h3>
-                <p class="product-desc">Kit completo con materiales y guía digital</p>
-                <div class="product-price">$${product.price}</div>
+                <p class="product-desc">${product.description || 'Kit completo con materiales y guía digital'}</p>
+                <div class="kit-level">
+                  <span class="level-badge ${product.category || 'principiante'}">${(product.category || 'principiante').charAt(0).toUpperCase() + (product.category || 'principiante').slice(1)}</span>
+                </div>
+                <div class="kit-features">
+                  <h4>Contenido del Kit:</h4>
+                  <ul>
+                    <li>📦 Materiales físicos</li>
+                    <li>📖 Guía paso a paso</li>
+                    <li>🎥 Videos tutoriales</li>
+                    <li>💻 Código de ejemplo</li>
+                    <li>🔧 Herramientas incluidas</li>
+                  </ul>
+                </div>
                 <div class="product-actions">
-                  <button class="btn" onclick="viewProduct('${product.id}')">Ver Detalles</button>
-                  <button class="btn btn-outline" onclick="addToCart('${product.id}')">Agregar al Carrito</button>
+                  <button class="btn" onclick="viewProduct('${product.id}')">Ver Contenido</button>
+                  <button class="btn btn-outline" onclick="getPassword('${product.id}')">Obtener Contraseña</button>
                 </div>
               </div>
             </div>
@@ -111,13 +123,69 @@
         window.location.href = `kit.html?id=${productId}`;
       }
       
-      function addToCart(productId) {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      function getPassword(productId) {
         const product = window.CROC_DATA.products.find(p => p.id === productId);
         if (product) {
-          cart.push({...product, quantity: 1});
-          localStorage.setItem('cart', JSON.stringify(cart));
-          alert('Producto agregado al carrito');
+          // Mostrar modal con información para obtener la contraseña
+          const modal = document.createElement('div');
+          modal.className = 'modal-backdrop show';
+          modal.innerHTML = `
+            <div class="modal">
+              <header>
+                <h3>Obtener Contraseña - ${product.name}</h3>
+                <button class="close-btn" onclick="this.closest('.modal-backdrop').remove()">×</button>
+              </header>
+              <div class="modal-body">
+                <div class="password-info">
+                  <div class="password-header">
+                    <div class="password-icon">🔐</div>
+                    <h4>Para obtener la contraseña de este kit:</h4>
+                  </div>
+                  <div class="password-steps">
+                    <div class="step">
+                      <div class="step-number">1</div>
+                      <div class="step-content">
+                        <strong>Adquiere el kit físicamente</strong>
+                        <p>Visita nuestra academia y compra el kit en persona</p>
+                      </div>
+                    </div>
+                    <div class="step">
+                      <div class="step-number">2</div>
+                      <div class="step-content">
+                        <strong>Presenta tu comprobante</strong>
+                        <p>Muestra el recibo de compra a un instructor</p>
+                      </div>
+                    </div>
+                    <div class="step">
+                      <div class="step-number">3</div>
+                      <div class="step-content">
+                        <strong>Recibe la contraseña</strong>
+                        <p>Un instructor te proporcionará el código de acceso</p>
+                      </div>
+                    </div>
+                    <div class="step">
+                      <div class="step-number">4</div>
+                      <div class="step-content">
+                        <strong>Accede al contenido</strong>
+                        <p>Disfruta de videos, guías y material exclusivo</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="contact-info">
+                    <div class="help-icon">💡</div>
+                    <div class="help-content">
+                      <strong>¿Necesitas ayuda?</strong>
+                      <p>Contacta a un instructor o visita la academia para más información sobre la adquisición de kits.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-actions">
+                <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">Entendido</button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
         }
       }
     </script>

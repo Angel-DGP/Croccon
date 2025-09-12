@@ -116,7 +116,8 @@
   const navToggle = $('#navToggle');
   const mainNav = $('#mainNav');
   if (navToggle && mainNav) {
-    navToggle.addEventListener('click', () => {
+    navToggle.addEventListener('click', (e) => {
+      e.preventDefault();
       mainNav.classList.toggle('open');
     });
   }
@@ -150,8 +151,10 @@
       const loginBtn = Array.from(nav.querySelectorAll('a,.btn')).find(x => x.textContent?.trim() === 'Ingresar');
       if (loginBtn) loginBtn.remove();
 
-      // Insertar botón de salir al final si no existe
-      if (!nav.querySelector('button[data-action="logout"]')) {
+      // Insertar botón de salir al final si no existe (evitar duplicados)
+      const existingLogout = nav.querySelector('button[data-action="logout"]');
+      const existingLogoutBtn = nav.querySelector('button[onclick="logout()"]');
+      if (!existingLogout && !existingLogoutBtn) {
         const btn = document.createElement('button');
         btn.className = 'btn btn-sm'; btn.dataset.action = 'logout'; btn.textContent = 'Cerrar Sesión';
         btn.addEventListener('click', () => { localStorage.removeItem('currentUser'); window.location.href = 'login.html'; });
@@ -160,9 +163,22 @@
 
       // Enlace por rol (ocultar Dashboard para estudiantes, mantener Admin para administradores)
       if (currentUserLocal.role === 'admin') {
+        // Admin: header fijo con [Admin, Tienda, Galería, Contacto] + Cerrar Sesión
+        // 1) Quitar Inicio y Dashboard si están
+        removeIf('index.html');
         removeIf('dashboard.html');
-        ensureLink('admin.html','Admin');
+        // 2) Asegurar enlaces requeridos
+        const adminLink = ensureLink('admin.html','Admin');
+        ensureLink('tienda.html','Tienda');
+        ensureLink('galeria.html','Galería');
+        ensureLink('contacto.html','Contacto');
+        // 3) Reordenar: Admin primero
+        if (nav.firstChild !== adminLink) {
+          nav.insertBefore(adminLink, nav.firstChild);
+        }
       } else {
+        // Estudiante: sin Admin/Dashboard en header
+        ensureLink('index.html','Inicio');
         removeIf('admin.html');
         removeIf('dashboard.html');
       }
@@ -195,14 +211,14 @@
     }
   }
 
-  // Mostrar información del usuario en la navegación
+  // Mostrar información del usuario en la navegación (solo para estudiantes)
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-  if (currentUser) {
+  if (currentUser && currentUser.role === 'estudiante') {
     const nav = $('.topbar nav');
     if (nav) {
       const userInfo = document.createElement('span');
       userInfo.className = 'user-info';
-      const milesHtml = currentUser.role === 'estudiante' ? `<span class="miles-badge" id="goDashboard" title="Ir a mi dashboard">${window.MilesSystem.getUserMiles()} millas</span>` : '';
+      const milesHtml = `<span class="miles-badge" id="goDashboard" title="Ir a mi dashboard">${window.MilesSystem.getUserMiles()} millas</span>`;
       userInfo.innerHTML = `<button id="userSummary" class="user-summary">Hola, ${currentUser.name} ${milesHtml}</button>`;
       nav.insertBefore(userInfo, nav.firstChild);
       // Click en badge -> dashboard del usuario

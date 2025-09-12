@@ -35,13 +35,14 @@
       <section class="admin-content">
         <div class="container">
           <!-- Pestañas de administración -->
-          <div class="admin-tabs">
-            <button class="tab-btn active" data-tab="students">Estudiantes</button>
-            <button class="tab-btn" data-tab="content">Contenido</button>
-            <button class="tab-btn" data-tab="reports">Reportes</button>
-            <button class="tab-btn" data-tab="messages">Mensajes</button>
-            <button class="tab-btn" data-tab="redemptions">Canjes</button>
-          </div>
+        <div class="admin-tabs">
+          <button class="tab-btn active" data-tab="students">Estudiantes</button>
+          <button class="tab-btn" data-tab="content">Contenido</button>
+          <button class="tab-btn" data-tab="reports">Reportes</button>
+          <button class="tab-btn" data-tab="messages">Mensajes</button>
+          <button class="tab-btn" data-tab="redemptions">Canjes</button>
+          <button class="tab-btn" data-tab="rewards">Premios</button>
+        </div>
 
           <!-- Tab: Estudiantes -->
           <div class="tab-content active" id="students">
@@ -152,6 +153,44 @@
               <!-- Los canjes se cargarán dinámicamente -->
             </div>
           </div>
+
+          <!-- Tab: Premios Físicos -->
+          <div class="tab-content" id="rewards">
+            <h2>Gestión de Premios Físicos</h2>
+            <div class="rewards-upload">
+              <h3>Agregar Nuevo Premio</h3>
+              <form id="rewardForm">
+                <div class="form-group">
+                  <label>Nombre del Premio</label>
+                  <input type="text" id="rewardName" required placeholder="Ej: Camiseta Croccon">
+                </div>
+                <div class="form-group">
+                  <label>Descripción</label>
+                  <input type="text" id="rewardDescription" required placeholder="Ej: Camiseta 100% algodón">
+                </div>
+                <div class="form-group">
+                  <label>Costo en Millas</label>
+                  <input type="number" id="rewardCost" required placeholder="200" min="1">
+                </div>
+                <div class="form-group">
+                  <label>Stock Disponible</label>
+                  <input type="number" id="rewardStock" required placeholder="10" min="0">
+                </div>
+                <div class="form-group">
+                  <label>Emoji/Icono</label>
+                  <input type="text" id="rewardImage" required placeholder="👕" maxlength="2">
+                </div>
+                <button type="submit" class="btn">Agregar Premio</button>
+              </form>
+            </div>
+            
+            <div class="rewards-list">
+              <h3>Premios Disponibles</h3>
+              <div id="rewardsList">
+                <!-- Los premios se cargarán dinámicamente -->
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -202,6 +241,7 @@
 
     <script src="assets/js/data.js"></script>
     <script src="assets/js/auth.js"></script>
+    <script src="assets/js/app.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Verificar autenticación de admin
@@ -220,6 +260,7 @@
         loadReports();
         loadMessages();
         loadRedemptions();
+        loadRewards();
       });
       
       function initTabs() {
