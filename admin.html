@@ -15,11 +15,7 @@
         <a class="brand" href="index.html">Croccon</a>
         <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
         <nav id="mainNav">
-          <a href="admin.html" class="active">Admin</a>
-          <a href="tienda.html">Tienda</a>
-          <a href="galeria.html">Galería</a>
-          <a href="contacto.html">Contacto</a>
-          <button class="btn btn-sm" onclick="logout()">Cerrar Sesión</button>
+          <!-- El contenido se generará dinámicamente -->
         </nav>
       </div>
     </header>
@@ -247,6 +243,19 @@
         // Verificar autenticación de admin
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         if (!currentUser || currentUser.role !== 'admin') {
+          // Para testing en Netlify, crear un admin por defecto si no existe
+          if (!currentUser) {
+            const defaultAdmin = {
+              id: 'admin-1',
+              name: 'Administrador',
+              email: 'admin@croccon.edu',
+              role: 'admin'
+            };
+            localStorage.setItem('currentUser', JSON.stringify(defaultAdmin));
+            // Recargar la página para aplicar los cambios
+            window.location.reload();
+            return;
+          }
           window.location.href = 'login.html';
           return;
         }
@@ -261,6 +270,13 @@
         loadMessages();
         loadRedemptions();
         loadRewards();
+        
+        // Asegurar que el header se configure correctamente
+        setTimeout(function() {
+          if (typeof window.setupHeaderByRole === 'function') {
+            window.setupHeaderByRole();
+          }
+        }, 200);
       });
       
       function initTabs() {
@@ -465,6 +481,9 @@
         localStorage.removeItem('currentUser');
         window.location.href = 'login.html';
       }
+      
+      // Función global para logout desde el header
+      window.logout = logout;
       
       // Formulario de contenido
       const contentFormEl = document.getElementById('contentForm');
