@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Croccon Academia de Robótica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="index.html">Croccon</a>
+        <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
+        <nav id="mainNav">
+          <a href="index.html">Inicio</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="login.html" class="btn btn-sm">Ingresar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <h1>¡Bienvenido, <span id="userName">Estudiante</span>!</h1>
+          <p>Tu centro de aprendizaje y logros</p>
+        </div>
+      </section>
+
+      <section class="dashboard-content">
+        <div class="container">
+          <!-- Puntos y Millas -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Millas Acumuladas</h3>
+              <div class="stat-number" id="totalMiles">0</div>
+              <p>Puntos disponibles para canjear</p>
+            </div>
+            <div class="stat-card">
+              <h3>Cursos Completados</h3>
+              <div class="stat-number" id="completedCourses">0</div>
+              <p>De 12 cursos disponibles</p>
+            </div>
+            <div class="stat-card">
+              <h3>Videos Vistos</h3>
+              <div class="stat-number" id="videosWatched">0</div>
+              <p>Contenido educativo consumido</p>
+            </div>
+          </div>
+
+          <!-- Acciones Rápidas -->
+          <div class="quick-actions">
+            <h2>Acciones Rápidas</h2>
+            <div class="actions-grid">
+              <button class="action-btn" onclick="earnMiles('video')">
+                <span class="action-icon">📹</span>
+                <span>Ver Video (+10 millas)</span>
+              </button>
+              <button class="action-btn" onclick="earnMiles('guide')">
+                <span class="action-icon">📖</span>
+                <span>Completar Guía (+15 millas)</span>
+              </button>
+              <button class="action-btn" onclick="earnMiles('project')">
+                <span class="action-icon">🔧</span>
+                <span>Subir Proyecto (+25 millas)</span>
+              </button>
+              <button class="action-btn" onclick="window.location.href='#redeem'">
+                <span class="action-icon">🎁</span>
+                <span>Canjear Puntos</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Cursos Disponibles -->
+          <div class="visualization-section">
+            <h2>Tu constelación de logros</h2>
+            <div class="miles-constellation">
+              <canvas id="milesMap"></canvas>
+            </div>
+            <div class="miles-legend">
+              <div class="dot-sample"></div>
+              <span>Cada punto representa una acción que te otorgó millas</span>
+            </div>
+          </div>
+
+          <!-- Cursos Disponibles -->
+          <div class="courses-section">
+            <h2>Mis Cursos</h2>
+            <div class="courses-grid" id="coursesGrid">
+              <!-- Los cursos se cargarán dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Canje de Puntos -->
+          <div class="redeem-section" id="redeem">
+            <h2>Canjear Puntos</h2>
+            <div class="rewards-grid" id="rewardsGrid">
+              <!-- Las recompensas se cargarán dinámicamente -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container foot-grid">
+        <div>
+          <strong>Croccon</strong>
+          <p>Buy One. Plant one.</p>
+        </div>
+        <div class="right">
+          <span>Síguenos</span>
+          <div class="dots"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Verificar autenticación
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (!currentUser || currentUser.role === 'admin') {
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        // Mostrar nombre del usuario
+        document.getElementById('userName').textContent = currentUser.name;
+        
+        // Cargar datos del dashboard
+        loadDashboardData();
+        loadCourses();
+        loadRewards();
+      });
+      
+      function loadDashboardData() {
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const miles = userData.miles || 0;
+        const completedCourses = userData.completedCourses || 0;
+        const videosWatched = userData.videosWatched || 0;
+        
+        document.getElementById('totalMiles').textContent = miles;
+        document.getElementById('completedCourses').textContent = completedCourses;
+        document.getElementById('videosWatched').textContent = videosWatched;
+
+        drawMilesConstellation();
+        // Redibujar al cambiar tamaño para mantener nitidez
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(drawMilesConstellation, 150);
+        });
+      }
+      
+      function loadCourses() {
+        const courses = [
+          { id: 1, title: 'Introducción a la Robótica', progress: 75, status: 'en_curso' },
+          { id: 2, title: 'Programación Básica', progress: 100, status: 'completado' },
+          { id: 3, title: 'Sensores y Actuadores', progress: 30, status: 'en_curso' },
+          { id: 4, title: 'Proyectos Avanzados', progress: 0, status: 'disponible' }
+        ];
+        
+        const coursesGrid = document.getElementById('coursesGrid');
+        coursesGrid.innerHTML = courses.map(course => `
+          <div class="course-card ${course.status}">
+            <h3>${course.title}</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${course.progress}%"></div>
+            </div>
+            <p>${course.progress}% completado</p>
+            <button class="btn btn-sm" onclick="continueCourse(${course.id})">
+              ${course.status === 'completado' ? 'Revisar' : 'Continuar'}
+            </button>
+          </div>
+        `).join('');
+      }
+
+      // Visualización: constelación de millas
+      function drawMilesConstellation(){
+        const canvas = document.getElementById('milesMap');
+        if(!canvas) return;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr,dpr);
+        // Fondo transparente (CSS maneja el gradiente)
+        ctx.clearRect(0,0,rect.width,rect.height);
+        // Obtener acciones
+        const log = JSON.parse(localStorage.getItem('actionLog') || '[]');
+        // Semilla
+        let seed = (log.length || 1) * 9301 + 49297;
+        const rand = () => (seed = (seed * 233280 + 49297) % 233280) / 233280;
+        // Dibujar puntos y líneas
+        const points = [];
+        for (let i=0;i<Math.max(20, log.length);i++){
+          const x = 20 + rand() * (rect.width-40);
+          const y = 20 + rand() * (rect.height-40);
+          const w = 3 + rand() * 10;
+          points.push({x,y,w});
+        }
+        // Conexiones con efecto brillo
+        for (let i=0;i<points.length;i++){
+          for (let j=i+1;j<points.length;j++){
+            const dx = points[i].x - points[j].x;
+            const dy = points[i].y - points[j].y;
+            const dist = Math.hypot(dx,dy);
+            if (dist < 120){
+              const alpha = 0.35 * (1 - dist/120);
+              const grad = ctx.createLinearGradient(points[i].x,points[i].y,points[j].x,points[j].y);
+              grad.addColorStop(0, `rgba(0,151,157,${alpha})`);
+              grad.addColorStop(1, `rgba(0,151,157,0)`);
+              ctx.strokeStyle = grad;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(points[i].x, points[i].y);
+              ctx.lineTo(points[j].x, points[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        // Puntos con halo y destellos
+        for (const p of points){
+          const halo = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.w*2.2);
+          halo.addColorStop(0,'rgba(0,151,157,0.35)');
+          halo.addColorStop(1,'rgba(0,151,157,0)');
+          ctx.fillStyle = halo;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.w*2,0,Math.PI*2); ctx.fill();
+
+          const core = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.w);
+          core.addColorStop(0,'rgba(0,151,157,1)');
+          core.addColorStop(1,'rgba(255,255,255,0.1)');
+          ctx.fillStyle = core;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.w*0.9,0,Math.PI*2); ctx.fill();
+        }
+
+        // Sutile animación de parpadeo
+        let t = 0;
+        function animate(){
+          t += 0.03;
+          ctx.clearRect(0,0,rect.width,rect.height);
+          // Redibujar conexiones
+          for (let i=0;i<points.length;i++){
+            for (let j=i+1;j<points.length;j++){
+              const dx = points[i].x - points[j].x;
+              const dy = points[i].y - points[j].y;
+              const dist = Math.hypot(dx,dy);
+              if (dist < 120){
+                const alpha = 0.25 * (1 - dist/120);
+                const grad = ctx.createLinearGradient(points[i].x,points[i].y,points[j].x,points[j].y);
+                grad.addColorStop(0, `rgba(0,151,157,${alpha})`);
+                grad.addColorStop(1, `rgba(0,151,157,0)`);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 1.1;
+                ctx.beginPath();
+                ctx.moveTo(points[i].x, points[i].y);
+                ctx.lineTo(points[j].x, points[j].y);
+                ctx.stroke();
+              }
+            }
+          }
+          // Redibujar puntos con brillo pulsante
+          for (const p of points){
+            const pulse = 1 + Math.sin(t + p.x + p.y) * 0.12;
+            const halo = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.w*2.4*pulse);
+            halo.addColorStop(0,'rgba(0,151,157,0.32)');
+            halo.addColorStop(1,'rgba(0,151,157,0)');
+            ctx.fillStyle = halo;
+            ctx.beginPath(); ctx.arc(p.x,p.y,p.w*2.2*pulse,0,Math.PI*2); ctx.fill();
+
+            const core = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.w);
+            core.addColorStop(0,'rgba(0,151,157,1)');
+            core.addColorStop(1,'rgba(255,255,255,0.2)');
+            ctx.fillStyle = core;
+            ctx.beginPath(); ctx.arc(p.x,p.y,p.w*0.9,0,Math.PI*2); ctx.fill();
+          }
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+      
+      function loadRewards() {
+        const rewards = [
+          { id: 1, name: 'Sticker Pack', cost: 50, available: true },
+          { id: 2, name: 'Lápiz Personalizado', cost: 100, available: true },
+          { id: 3, name: 'Camiseta Croccon', cost: 200, available: true },
+          { id: 4, name: 'Kit de Robótica', cost: 500, available: false }
+        ];
+        
+        const rewardsGrid = document.getElementById('rewardsGrid');
+        rewardsGrid.innerHTML = rewards.map(reward => `
+          <div class="reward-card ${!reward.available ? 'unavailable' : ''}">
+            <h3>${reward.name}</h3>
+            <div class="reward-cost">${reward.cost} millas</div>
+            <button class="btn btn-sm" ${!reward.available ? 'disabled' : ''} 
+                    onclick="redeemReward(${reward.id})">
+              ${reward.available ? 'Canjear' : 'No Disponible'}
+            </button>
+          </div>
+        `).join('');
+      }
+      
+      function earnMiles(action) {
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const miles = userData.miles || 0;
+        let earned = 0;
+        
+        switch(action) {
+          case 'video': earned = 10; break;
+          case 'guide': earned = 15; break;
+          case 'project': earned = 25; break;
+        }
+        
+        userData.miles = miles + earned;
+        localStorage.setItem('userData', JSON.stringify(userData));
+        
+        alert(`¡Ganaste ${earned} millas! Total: ${userData.miles}`);
+        loadDashboardData();
+      }
+      
+      function redeemReward(rewardId) {
+        const rewards = [
+          { id: 1, name: 'Sticker Pack', cost: 50 },
+          { id: 2, name: 'Lápiz Personalizado', cost: 100 },
+          { id: 3, name: 'Camiseta Croccon', cost: 200 },
+          { id: 4, name: 'Kit de Robótica', cost: 500 }
+        ];
+        
+        const reward = rewards.find(r => r.id === rewardId);
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const miles = userData.miles || 0;
+        
+        if (miles >= reward.cost) {
+          userData.miles = miles - reward.cost;
+          localStorage.setItem('userData', JSON.stringify(userData));
+          
+          // Registrar canje
+          const redemptions = JSON.parse(localStorage.getItem('redemptions') || '[]');
+          redemptions.push({
+            rewardId: reward.id,
+            rewardName: reward.name,
+            cost: reward.cost,
+            date: new Date().toLocaleString('es-ES'),
+            status: 'pendiente'
+          });
+          localStorage.setItem('redemptions', JSON.stringify(redemptions));
+          
+          alert(`¡Recompensa canjeada! ${reward.name} por ${reward.cost} millas`);
+          loadDashboardData();
+          loadRewards();
+        } else {
+          alert('No tienes suficientes millas para esta recompensa');
+        }
+      }
+      
+      function continueCourse(courseId) {
+        alert(`Continuando curso ${courseId}...`);
+      }
+      
+      function logout() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+      }
+    </script>
+  </body>
+</html>

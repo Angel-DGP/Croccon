@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Croccon Academia de Robótica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="index.html">Croccon</a>
+        <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
+        <nav id="mainNav">
+          <a href="index.html" class="active">Inicio</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="login.html" class="btn btn-sm">Ingresar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="overlay"></div>
+        <img class="hero-bg" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop" alt="Circuitos" />
+        <div class="container hero-content">
+          <div>
+            <h1>
+              Crea el futuro con<br />
+              robótica y creatividad
+            </h1>
+            <p class="subtitle">Aprende jugando. Gana millas. Canjea recompensas.</p>
+            <div class="cta-row">
+              <a href="login.html" class="btn">Acceder a la academia</a>
+              <a href="#impacto" class="link">Ver más</a>
+            </div>
+          </div>
+          <div class="mosaic">
+            <div class="card small"></div>
+            <div class="card"></div>
+            <div class="card wide"></div>
+            <div class="card tall"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Marcas / partners -->
+      <section class="partners">
+        <div class="container row logos">
+          <div class="logo-pill">WOODCHUCK</div>
+          <div class="logo-pill">10</div>
+          <div class="logo-pill">TREE TRIBE</div>
+          <div class="logo-pill">TRVST</div>
+        </div>
+      </section>
+
+      <!-- Impacto -->
+      <section id="impacto" class="impacto">
+        <div class="container grid-impacto">
+          <div>
+            <h2>Impacto real en el aprendizaje</h2>
+            <p>
+              En Croccon desarrollamos habilidades STEAM con proyectos guiados. Nuestras
+              actividades fomentan el pensamiento lógico, la creatividad y el trabajo
+              en equipo.
+            </p>
+            <p>
+              Con nuestro sistema de millas, cada logro suma puntos que luego pueden
+              canjearse por recompensas físicas.
+            </p>
+          </div>
+          <div class="impacto-cards">
+            <div class="tile">En Cursos</div>
+            <div class="tile emph">Impacto</div>
+            <div class="tile stat">
+              <span>60%</span>
+              <small>más participación</small>
+            </div>
+            <div class="tile">Millas</div>
+            <div class="tile stat">
+              <span>1.5M</span>
+              <small>acumuladas</small>
+            </div>
+            <div class="tile photo"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tienda preview -->
+      <section class="tienda-preview">
+        <div class="container">
+          <div class="section-head">
+            <h3>Nuestros Kits</h3>
+            <a href="tienda.html" class="link">Ver Tienda</a>
+          </div>
+          <div class="products" id="homeProducts"></div>
+        </div>
+      </section>
+
+      <!-- Comunidad -->
+      <section class="comunidad">
+        <div class="container grid-comunidad">
+          <div>
+            <h3>Únete a nuestra comunidad</h3>
+          </div>
+          <div class="c-tile"></div>
+          <div class="c-tile"></div>
+          <div class="c-tile text">Nuestro equipo trabaja para crear impacto</div>
+          <div class="c-tile"></div>
+          <div class="c-tile text">Recibe novedades y materiales</div>
+        </div>
+        <form class="newsletter container" id="newsletterForm">
+          <input type="email" placeholder="Ingresa tu email" required />
+          <button class="btn btn-sm" type="submit">Suscribirme</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container foot-grid">
+        <div>
+          <strong>Croccon</strong>
+          <p>Buy One. Plant one.</p>
+        </div>
+        <div class="right">
+          <span>Síguenos</span>
+          <div class="dots"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+  </html>
+
+

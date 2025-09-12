@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kit de Robótica - Croccon Academia de Robótica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="index.html">Croccon</a>
+        <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
+        <nav id="mainNav">
+          <a href="index.html">Inicio</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="login.html" class="btn btn-sm">Ingresar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <h1>Kit de Robótica</h1>
+          <p>Contenido exclusivo para propietarios del kit</p>
+        </div>
+      </section>
+
+      <section class="kit-content">
+        <div class="container">
+          <div class="kit-card" id="kitCard">
+            <!-- El contenido del kit se cargará dinámicamente -->
+          </div>
+          
+          <!-- Formulario de acceso con contraseña -->
+          <div class="password-form" id="passwordForm">
+            <h2>Acceso al Contenido Exclusivo</h2>
+            <p>Ingresa la contraseña que viene con tu kit para acceder al video y guía</p>
+            <form id="accessForm">
+              <div class="form-group">
+                <label for="kitPassword">Contraseña del Kit</label>
+                <input type="password" id="kitPassword" name="password" required placeholder="Ingresa la contraseña">
+              </div>
+              <button type="submit" class="btn btn-full">Acceder al Contenido</button>
+            </form>
+            <div class="password-hint">
+              <p>💡 La contraseña se encuentra en la etiqueta QR de tu kit</p>
+            </div>
+          </div>
+          
+          <!-- Pantalla de éxito -->
+          <div class="unlocked-content" id="successScreen" style="display:none;">
+            <h2>¡Acceso concedido!</h2>
+            <p>Tu contraseña es válida. Estamos preparando tu contenido...</p>
+            <div class="progress-bar">
+              <div class="progress-fill" id="successProgress" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- Contenido desbloqueado -->
+          <div class="unlocked-content" id="unlockedContent" style="display: none;">
+            <h2>¡Contenido Desbloqueado!</h2>
+            <div class="content-tabs">
+              <button class="tab-btn active" data-tab="video">Video Tutorial</button>
+              <button class="tab-btn" data-tab="guide">Guía de Montaje</button>
+              <button class="tab-btn" data-tab="progress">Progreso</button>
+            </div>
+            
+            <div class="tab-content active" id="video">
+              <h3>Video Tutorial</h3>
+              <div class="video-container">
+                <iframe id="kitVideo" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            
+            <div class="tab-content" id="guide">
+              <h3>Guía de Montaje</h3>
+              <div class="guide-content">
+                <h4>Materiales Incluidos:</h4>
+                <ul>
+                  <li>Placa Arduino Uno</li>
+                  <li>Sensor de proximidad</li>
+                  <li>Motor DC con ruedas</li>
+                  <li>Cables de conexión</li>
+                  <li>Estructura base</li>
+                  <li>Tornillos y tuercas</li>
+                </ul>
+                
+                <h4>Pasos de Montaje:</h4>
+                <ol>
+                  <li>Conecta la placa Arduino a la estructura base</li>
+                  <li>Instala el sensor de proximidad en la parte frontal</li>
+                  <li>Conecta el motor DC a los pines correspondientes</li>
+                  <li>Fija las ruedas al motor</li>
+                  <li>Conecta todos los cables según el diagrama</li>
+                  <li>Sube el código de programación</li>
+                </ol>
+                
+                <div class="download-section">
+                  <h4>Recursos Adicionales:</h4>
+                  <button class="btn btn-outline" onclick="downloadCode()">Descargar Código</button>
+                  <button class="btn btn-outline" onclick="downloadDiagram()">Descargar Diagrama</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-content" id="progress">
+              <h3>Registro de Accesos</h3>
+              <div id="accessLogList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container foot-grid">
+        <div>
+          <strong>Croccon</strong>
+          <p>Buy One. Plant one.</p>
+        </div>
+        <div class="right">
+          <span>Síguenos</span>
+          <div class="dots"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Obtener ID del kit desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const kitId = urlParams.get('id');
+        
+        if (!kitId || !window.CROC_DATA) {
+          alert('Kit no encontrado');
+          window.location.href = 'tienda.html';
+          return;
+        }
+        
+        const kit = window.CROC_DATA.products.find(p => p.id === kitId);
+        if (!kit) {
+          alert('Kit no encontrado');
+          window.location.href = 'tienda.html';
+          return;
+        }
+        
+        // Mostrar información del kit
+        displayKitInfo(kit);
+        
+        // Configurar formulario de acceso
+        setupPasswordForm(kit);
+        
+        // Configurar pestañas de contenido
+        setupContentTabs();
+      });
+      
+      function displayKitInfo(kit) {
+        const kitCard = document.getElementById('kitCard');
+        kitCard.innerHTML = `
+          <div class="kit-info">
+            <img src="${kit.img}" alt="${kit.name}">
+            <div class="kit-details">
+              <h2>${kit.name}</h2>
+              <p class="kit-price">$${kit.price}</p>
+              <p class="kit-description">
+                Este kit incluye todos los componentes necesarios para construir tu primer robot. 
+                El contenido digital está protegido con contraseña para garantizar que solo los 
+                propietarios del kit puedan acceder a él.
+              </p>
+              <div class="kit-features">
+                <div class="feature">
+                  <span class="feature-icon">📹</span>
+                  <span>Video tutorial paso a paso</span>
+                </div>
+                <div class="feature">
+                  <span class="feature-icon">📖</span>
+                  <span>Guía de montaje detallada</span>
+                </div>
+                <div class="feature">
+                  <span class="feature-icon">💻</span>
+                  <span>Código de programación incluido</span>
+                </div>
+                <div class="feature">
+                  <span class="feature-icon">🔧</span>
+                  <span>Soporte técnico disponible</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      function setupPasswordForm(kit) {
+        const accessForm = document.getElementById('accessForm');
+        
+        accessForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          // Ahora aceptar cualquier contraseña no vacía
+          const password = document.getElementById('kitPassword').value.trim();
+          if (!password) { alert('Ingresa una contraseña'); return; }
+
+          // Mostrar pantalla de éxito con barra de progreso corta
+          document.getElementById('passwordForm').style.display = 'none';
+          const success = document.getElementById('successScreen');
+          success.style.display = 'block';
+          let pct = 0; const bar = document.getElementById('successProgress');
+          const timer = setInterval(() => { pct += 20; bar.style.width = pct + '%'; if (pct >= 100) { clearInterval(timer); success.style.display = 'none';
+            // Mostrar contenido
+            document.getElementById('unlockedContent').style.display = 'block';
+            const videoIframe = document.getElementById('kitVideo');
+            videoIframe.src = kit.video;
+            // Registrar acceso
+            const accessLog = JSON.parse(localStorage.getItem('kitAccessLog') || '[]');
+            const record = { kitId: kit.id, kitName: kit.name, accessTime: new Date().toLocaleString('es-ES'), byPassword: true };
+            accessLog.push(record);
+            localStorage.setItem('kitAccessLog', JSON.stringify(accessLog));
+            renderAccessLog();
+          } }, 150);
+        });
+      }
+      
+      function setupContentTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
+            
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+          });
+        });
+      }
+      
+      function renderAccessLog() {
+        const list = document.getElementById('accessLogList');
+        if (!list) return;
+        const accessLog = JSON.parse(localStorage.getItem('kitAccessLog') || '[]')
+          .filter(i => i.kitId === new URLSearchParams(window.location.search).get('id'))
+          .reverse();
+        if (accessLog.length === 0) {
+          list.innerHTML = '<p>No hay accesos registrados todavía.</p>';
+          return;
+        }
+        list.innerHTML = accessLog.map(r => `<div class="content-item"><span>${r.accessTime}</span><span>${r.kitName}</span><span>Acceso permitido</span></div>`).join('');
+      }
+      
+      function downloadCode() {
+        // Simular descarga de código
+        const code = `// Código para ${document.querySelector('h2').textContent}
+void setup() {
+  Serial.begin(9600);
+  pinMode(2, INPUT);
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+  int sensorValue = digitalRead(2);
+  if (sensorValue == HIGH) {
+    digitalWrite(9, HIGH);
+  } else {
+    digitalWrite(9, LOW);
+  }
+  delay(100);
+}`;
+        
+        const blob = new Blob([code], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'robot_code.ino';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+      
+      function downloadDiagram() {
+        alert('Descargando diagrama de conexiones...');
+        // Aquí se podría implementar la descarga de un archivo PDF o imagen
+      }
+    </script>
+  </body>
+</html>

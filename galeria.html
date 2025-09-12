@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galería - Croccon Academia de Robótica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="index.html">Croccon</a>
+        <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
+        <nav id="mainNav">
+          <a href="index.html">Inicio</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="galeria.html" class="active">Galería</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="login.html" class="btn btn-sm">Ingresar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <h1>Galería de Proyectos</h1>
+          <p>Descubre los increíbles proyectos creados por nuestros estudiantes</p>
+        </div>
+      </section>
+
+      <section class="galeria-content">
+        <div class="container">
+          <div class="gallery-filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="robots">Robots</button>
+            <button class="filter-btn" data-filter="competencia">Competencias</button>
+            <button class="filter-btn" data-filter="proyectos">Proyectos</button>
+          </div>
+          
+          <div class="gallery-grid" id="galleryGrid">
+            <!-- Las imágenes se cargarán dinámicamente -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container foot-grid">
+        <div>
+          <strong>Croccon</strong>
+          <p>Buy One. Plant one.</p>
+        </div>
+        <div class="right">
+          <span>Síguenos</span>
+          <div class="dots"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+      // Datos de galería simulados
+      const galleryData = [
+        { id: 1, src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop', title: 'Robot seguidor de línea', category: 'robots', student: 'María González' },
+        { id: 2, src: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=800&auto=format&fit=crop', title: 'Brazo robótico', category: 'robots', student: 'Carlos López' },
+        { id: 3, src: 'https://images.unsplash.com/photo-1581093588401-16ec4a6a7c9f?q=80&w=800&auto=format&fit=crop', title: 'Competencia regional de robótica', category: 'competencia', student: 'Equipo Alpha' },
+        { id: 4, src: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=800&auto=format&fit=crop', title: 'PCB personalizada', category: 'proyectos', student: 'Ana Martínez' },
+        { id: 5, src: 'https://images.unsplash.com/photo-1548092372-0d1bd40894a3?q=80&w=800&auto=format&fit=crop', title: 'Robot sumo', category: 'robots', student: 'Diego Ramírez' },
+        { id: 6, src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop', title: 'Expo tecnológica de hardware', category: 'competencia', student: 'Equipo Beta' },
+        { id: 7, src: 'https://images.unsplash.com/photo-1555617981-dac3880eac6e?q=80&w=800&auto=format&fit=crop', title: 'Casa inteligente con microcontroladores', category: 'proyectos', student: 'Sofía Herrera' },
+        { id: 8, src: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800&auto=format&fit=crop', title: 'Robot de rescate', category: 'robots', student: 'Luis Fernández' }
+      ];
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const galleryGrid = document.getElementById('galleryGrid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        
+        function renderGallery(items) {
+          galleryGrid.innerHTML = items.map(item => `
+            <div class="gallery-item" data-category="${item.category}">
+              <img src="${item.src}" alt="${item.title}" onclick="openModal('${item.id}')">
+              <div class="gallery-overlay">
+                <h3>${item.title}</h3>
+                <p>Por: ${item.student}</p>
+              </div>
+            </div>
+          `).join('');
+        }
+        
+        function filterGallery(category) {
+          const filtered = category === 'all' ? galleryData : galleryData.filter(item => item.category === category);
+          renderGallery(filtered);
+        }
+        
+        // Filtros
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterGallery(btn.dataset.filter);
+          });
+        });
+        
+        // Cargar galería inicial
+        renderGallery(galleryData);
+      });
+      
+      function openModal(itemId) {
+        const item = galleryData.find(i => i.id == itemId);
+        if (item) {
+          alert(`Proyecto: ${item.title}\nEstudiante: ${item.student}\nCategoría: ${item.category}`);
+        }
+      }
+    </script>
+  </body>
+</html>

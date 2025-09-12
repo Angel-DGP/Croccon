@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto - Croccon Academia de Robótica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="index.html">Croccon</a>
+        <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
+        <nav id="mainNav">
+          <a href="index.html">Inicio</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html" class="active">Contacto</a>
+          <a href="login.html" class="btn btn-sm">Ingresar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <h1>Contacto</h1>
+          <p>¿Tienes preguntas? Estamos aquí para ayudarte</p>
+        </div>
+      </section>
+
+      <section class="contacto-content">
+        <div class="container">
+          <div class="contact-grid">
+            <div class="contact-info">
+              <h2>Información de Contacto</h2>
+              <div class="contact-item">
+                <h3>📍 Dirección</h3>
+                <p>Av. Robótica 123<br>Ciudad Tecnológica, CT 12345</p>
+              </div>
+              <div class="contact-item">
+                <h3>📞 Teléfono</h3>
+                <p>+1 (555) 123-4567</p>
+              </div>
+              <div class="contact-item">
+                <h3>✉️ Email</h3>
+                <p>info@croccon.edu<br>soporte@croccon.edu</p>
+              </div>
+              <div class="contact-item">
+                <h3>🕒 Horarios</h3>
+                <p>Lunes - Viernes: 8:00 AM - 6:00 PM<br>Sábados: 9:00 AM - 2:00 PM</p>
+              </div>
+            </div>
+            
+            <div class="contact-form-container">
+              <h2>Envíanos un Mensaje</h2>
+              <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                  <label for="nombre">Nombre Completo *</label>
+                  <input type="text" id="nombre" name="nombre" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+                  <input type="tel" id="telefono" name="telefono">
+                </div>
+                
+                <div class="form-group">
+                  <label for="asunto">Asunto *</label>
+                  <select id="asunto" name="asunto" required>
+                    <option value="">Selecciona un asunto</option>
+                    <option value="inscripcion">Inscripción de Estudiante</option>
+                    <option value="consulta">Consulta General</option>
+                    <option value="soporte">Soporte Técnico</option>
+                    <option value="tienda">Consulta sobre Tienda</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="mensaje">Mensaje *</label>
+                  <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Cuéntanos cómo podemos ayudarte..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-full">Enviar Mensaje</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container foot-grid">
+        <div>
+          <strong>Croccon</strong>
+          <p>Buy One. Plant one.</p>
+        </div>
+        <div class="right">
+          <span>Síguenos</span>
+          <div class="dots"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+          contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+            messages.push({
+              ...data,
+              id: Date.now(),
+              fecha: new Date().toLocaleString('es-ES'),
+              leido: false
+            });
+            localStorage.setItem('contactMessages', JSON.stringify(messages));
+            alert('¡Mensaje enviado correctamente! Te responderemos pronto.');
+            contactForm.reset();
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
