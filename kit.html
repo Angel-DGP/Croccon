@@ -218,11 +218,28 @@
             document.getElementById('unlockedContent').style.display = 'block';
             const videoIframe = document.getElementById('kitVideo');
             videoIframe.src = kit.video;
-            // Registrar acceso
-            const accessLog = JSON.parse(localStorage.getItem('kitAccessLog') || '[]');
-            const record = { kitId: kit.id, kitName: kit.name, accessTime: new Date().toLocaleString('es-ES'), byPassword: true };
+            // Registrar acceso con información del usuario
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const accessLog = JSON.parse(localStorage.getItem('kitAccess') || '[]');
+            const record = { 
+              id: Date.now().toString(),
+              kitId: kit.id, 
+              kitName: kit.name, 
+              passwordUsed: password,
+              studentName: currentUser.name || 'Usuario no identificado',
+              studentEmail: currentUser.email || 'N/A',
+              accessDate: new Date().toLocaleString('es-ES'),
+              deviceInfo: navigator.userAgent.substring(0, 50) + '...',
+              timestamp: new Date().toISOString()
+            };
             accessLog.push(record);
-            localStorage.setItem('kitAccessLog', JSON.stringify(accessLog));
+            localStorage.setItem('kitAccess', JSON.stringify(accessLog));
+            
+            // Mantener compatibilidad con el log anterior
+            const oldAccessLog = JSON.parse(localStorage.getItem('kitAccessLog') || '[]');
+            const oldRecord = { kitId: kit.id, kitName: kit.name, accessTime: new Date().toLocaleString('es-ES'), byPassword: true };
+            oldAccessLog.push(oldRecord);
+            localStorage.setItem('kitAccessLog', JSON.stringify(oldAccessLog));
             renderAccessLog();
           } }, 150);
         });

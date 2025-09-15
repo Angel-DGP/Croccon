@@ -15,7 +15,11 @@
         <a class="brand" href="index.html">Croccon</a>
         <button class="hamburger" id="navToggle" aria-label="Abrir menú">☰</button>
         <nav id="mainNav">
-          <!-- El contenido se generará dinámicamente -->
+          <a href="admin.html" class="active">Admin</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html">Contacto</a>
+          <button class="btn btn-sm" onclick="logout()">Cerrar Sesión</button>
         </nav>
       </div>
     </header>
@@ -33,7 +37,7 @@
           <!-- Pestañas de administración -->
         <div class="admin-tabs">
           <button class="tab-btn active" data-tab="students">Estudiantes</button>
-          <button class="tab-btn" data-tab="content">Contenido</button>
+          <button class="tab-btn" data-tab="kits">Kits</button>
           <button class="tab-btn" data-tab="reports">Reportes</button>
           <button class="tab-btn" data-tab="messages">Mensajes</button>
           <button class="tab-btn" data-tab="redemptions">Canjes</button>
@@ -66,48 +70,31 @@
             </div>
           </div>
 
-          <!-- Tab: Contenido -->
-          <div class="tab-content" id="content">
-            <h2>Gestión de Contenido</h2>
-            <div class="content-upload">
-              <h3>Subir Nuevo Contenido</h3>
-              <form id="contentForm">
-                <div class="form-group">
-                  <label>Tipo de Contenido</label>
-                  <select id="contentType" required>
-                    <option value="">Seleccionar tipo</option>
-                    <option value="video">Video</option>
-                    <option value="guia">Guía</option>
-                    <option value="reporte">Reporte</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Asociar a Kit</label>
-                  <select id="contentKit">
-                    <option value="">Ninguno</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Título</label>
-                  <input type="text" id="contentTitle" required>
-                </div>
-                <div class="form-group">
-                  <label>Descripción</label>
-                  <textarea id="contentDescription" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                  <label>URL del Video (opcional)</label>
-                  <input type="url" id="contentUrl">
-                </div>
-                <button type="submit" class="btn">Subir Contenido</button>
-              </form>
+          <!-- Tab: Kits -->
+          <div class="tab-content" id="kits">
+            <h2>Gestión de Kits</h2>
+            <div class="admin-actions">
+              <button class="btn" onclick="showAddKitForm()">Agregar Kit</button>
+              <button class="btn btn-outline" onclick="exportKits()">Exportar Lista</button>
             </div>
             
-            <div class="content-list">
-              <h3>Contenido Subido</h3>
-              <div id="contentList">
-                <!-- El contenido se cargará dinámicamente -->
-              </div>
+            <div class="kits-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Contraseña</th>
+                    <th>Accesos</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="kitsTableBody">
+                  <!-- Los kits se cargarán dinámicamente -->
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -145,46 +132,51 @@
           <!-- Tab: Canjes -->
           <div class="tab-content" id="redemptions">
             <h2>Canjes de Puntos</h2>
-            <div id="redemptionsList">
-              <!-- Los canjes se cargarán dinámicamente -->
+            <div class="redemptions-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Estudiante</th>
+                    <th>Email</th>
+                    <th>Premio</th>
+                    <th>Costo (Millas)</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="redemptionsTableBody">
+                  <!-- Los canjes se cargarán dinámicamente -->
+                </tbody>
+              </table>
             </div>
           </div>
 
           <!-- Tab: Premios Físicos -->
           <div class="tab-content" id="rewards">
             <h2>Gestión de Premios Físicos</h2>
-            <div class="rewards-upload">
-              <h3>Agregar Nuevo Premio</h3>
-              <form id="rewardForm">
-                <div class="form-group">
-                  <label>Nombre del Premio</label>
-                  <input type="text" id="rewardName" required placeholder="Ej: Camiseta Croccon">
-                </div>
-                <div class="form-group">
-                  <label>Descripción</label>
-                  <input type="text" id="rewardDescription" required placeholder="Ej: Camiseta 100% algodón">
-                </div>
-                <div class="form-group">
-                  <label>Costo en Millas</label>
-                  <input type="number" id="rewardCost" required placeholder="200" min="1">
-                </div>
-                <div class="form-group">
-                  <label>Stock Disponible</label>
-                  <input type="number" id="rewardStock" required placeholder="10" min="0">
-                </div>
-                <div class="form-group">
-                  <label>Emoji/Icono</label>
-                  <input type="text" id="rewardImage" required placeholder="👕" maxlength="2">
-                </div>
-                <button type="submit" class="btn">Agregar Premio</button>
-              </form>
+            <div class="admin-actions">
+              <button class="btn" onclick="showAddRewardForm()">Agregar Premio</button>
+              <button class="btn btn-outline" onclick="exportRewards()">Exportar Lista</button>
             </div>
             
-            <div class="rewards-list">
-              <h3>Premios Disponibles</h3>
-              <div id="rewardsList">
-                <!-- Los premios se cargarán dinámicamente -->
-              </div>
+            <div class="rewards-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Icono</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Costo (Millas)</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="rewardsTableBody">
+                  <!-- Los premios se cargarán dinámicamente -->
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -243,19 +235,6 @@
         // Verificar autenticación de admin
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         if (!currentUser || currentUser.role !== 'admin') {
-          // Para testing en Netlify, crear un admin por defecto si no existe
-          if (!currentUser) {
-            const defaultAdmin = {
-              id: 'admin-1',
-              name: 'Administrador',
-              email: 'admin@croccon.edu',
-              role: 'admin'
-            };
-            localStorage.setItem('currentUser', JSON.stringify(defaultAdmin));
-            // Recargar la página para aplicar los cambios
-            window.location.reload();
-            return;
-          }
           window.location.href = 'login.html';
           return;
         }
@@ -265,18 +244,11 @@
         
         // Cargar datos iniciales
         loadStudents();
-        loadContent();
+        loadKits();
         loadReports();
         loadMessages();
         loadRedemptions();
         loadRewards();
-        
-        // Asegurar que el header se configure correctamente
-        setTimeout(function() {
-          if (typeof window.setupHeaderByRole === 'function') {
-            window.setupHeaderByRole();
-          }
-        }, 200);
       });
       
       function initTabs() {
@@ -314,20 +286,36 @@
           </tr>
         `).join('');
       }
-      
-      function loadContent() {
-        const content = JSON.parse(localStorage.getItem('content') || '[]');
-        const contentList = document.getElementById('contentList');
+
+      function loadKits() {
+        const kits = window.CROC_DATA ? window.CROC_DATA.products : [];
+        const kitAccess = JSON.parse(localStorage.getItem('kitAccess') || '[]');
         
-        contentList.innerHTML = content.map(item => `
-          <div class="content-item">
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
-            <span class="content-type">${item.type}${item.kitId ? ' · Kit: ' + item.kitId : ''}</span>
-            <span class="content-date">${item.date}</span>
-          </div>
-        `).join('');
+        const tbody = document.getElementById('kitsTableBody');
+        tbody.innerHTML = kits.map(kit => {
+          const accessCount = kitAccess.filter(access => access.kitId === kit.id).length;
+          return `
+            <tr>
+              <td>${kit.name}</td>
+              <td><span class="level-badge ${kit.category}">${kit.category.toUpperCase()}</span></td>
+              <td>$${kit.price}</td>
+              <td><code>${kit.password}</code></td>
+              <td>
+                <span class="access-count">${accessCount} accesos</span>
+                <button class="btn btn-sm btn-outline" onclick="viewKitAccess('${kit.id}', '${kit.name}')" style="margin-left: 8px;">
+                  Ver Accesos
+                </button>
+              </td>
+              <td><span class="status active">Disponible</span></td>
+              <td>
+                <button class="btn btn-sm" onclick="editKit('${kit.id}')">Editar</button>
+                <button class="btn btn-sm btn-outline" onclick="deleteKit('${kit.id}')">Eliminar</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
       }
+      
       
       function loadReports() {
         const users = JSON.parse(localStorage.getItem('users') || '[]');
@@ -362,72 +350,660 @@
       
       function loadRedemptions() {
         const redemptions = JSON.parse(localStorage.getItem('redemptions') || '[]');
-        const redemptionsList = document.getElementById('redemptionsList');
+        const tbody = document.getElementById('redemptionsTableBody');
         
-        redemptionsList.innerHTML = redemptions.map(redemption => `
-          <div class="redemption-item">
-            <h4>${redemption.rewardName}</h4>
-            <p><strong>Costo:</strong> ${redemption.cost} millas</p>
-            <p><strong>Fecha:</strong> ${redemption.date}</p>
-            <p><strong>Estado:</strong> <span class="status ${redemption.status}">${redemption.status}</span></p>
-            <div class="redemption-actions">
-              <button class="btn btn-sm" onclick="approveRedemption('${redemption.id}')">Aprobar</button>
-              <button class="btn btn-sm btn-outline" onclick="rejectRedemption('${redemption.id}')">Rechazar</button>
-            </div>
-          </div>
+        tbody.innerHTML = redemptions.map(redemption => `
+          <tr>
+            <td>${redemption.studentName || 'Usuario no encontrado'}</td>
+            <td>${redemption.studentEmail || 'N/A'}</td>
+            <td>${redemption.rewardName}</td>
+            <td>${redemption.cost}</td>
+            <td>${redemption.date}</td>
+            <td><span class="status ${redemption.status}">${redemption.status}</span></td>
+            <td>
+              ${redemption.status === 'pendiente' ? `
+                <button class="btn btn-sm" onclick="approveRedemption('${redemption.id}')">Aprobar</button>
+                <button class="btn btn-sm btn-outline" onclick="rejectRedemption('${redemption.id}')">Rechazar</button>
+              ` : `
+                <span class="text-muted">Procesado</span>
+              `}
+            </td>
+          </tr>
         `).join('');
       }
       
       function showAddStudentForm() {
-        const name = prompt('Nombre del estudiante:');
-        const email = prompt('Email del estudiante:');
-        if (name && email) {
-          const users = JSON.parse(localStorage.getItem('users') || '[]');
-          const newStudent = {
-            id: Date.now().toString(),
-            name: name,
-            email: email,
-            username: email,
-            password: 'estudiante123',
-            role: 'estudiante',
-            miles: 0
-          };
-          users.push(newStudent);
-          localStorage.setItem('users', JSON.stringify(users));
-          loadStudents();
-          alert('Estudiante agregado correctamente');
+        document.getElementById('addStudentModal').classList.add('show');
+      }
+
+      function showAddKitForm() {
+        document.getElementById('addKitModal').classList.add('show');
+      }
+
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('show');
+        // Quitar el estilo inline para no bloquear futuras aperturas
+        if (modal && modal.style) {
+          modal.style.removeProperty('display');
         }
       }
+
+      function saveNewStudent() {
+        const form = document.getElementById('addStudentForm');
+        const formData = new FormData(form);
+        
+        const name = formData.get('name').trim();
+        const email = formData.get('email').trim();
+        const password = formData.get('password').trim();
+        const miles = parseInt(formData.get('miles')) || 0;
+        const status = formData.get('status');
+        
+        if (!name || !email || !password) {
+          alert('Por favor completa todos los campos requeridos');
+          return;
+        }
+
+        if (password.length < 6) {
+          alert('La contraseña debe tener al menos 6 caracteres');
+          return;
+        }
+
+        // Verificar si el email ya existe
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const existingUser = users.find(u => u.email === email);
+        if (existingUser) {
+          alert('Ya existe un usuario con este email');
+          return;
+        }
+        
+        const newStudent = {
+          id: Date.now().toString(),
+          name: name,
+          email: email,
+          username: email,
+          password: password,
+          role: 'estudiante',
+          miles: miles,
+          status: status,
+          createdBy: 'admin',
+          createdAt: new Date().toISOString()
+        };
+
+        users.push(newStudent);
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        loadStudents();
+        closeModal('addStudentModal');
+        form.reset();
+        alert(`Estudiante creado correctamente.\nEmail: ${email}\nContraseña: ${password}`);
+      }
+
+      function saveNewKit() {
+        const form = document.getElementById('addKitForm');
+        const formData = new FormData(form);
+        
+        const newKit = {
+          id: 'kit-' + Date.now().toString(),
+          name: formData.get('name'),
+          description: formData.get('description'),
+          price: parseFloat(formData.get('price')),
+          category: formData.get('category'),
+          password: formData.get('password'),
+          img: formData.get('img'),
+          video: formData.get('video') || 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        };
+
+        // Agregar a los datos existentes
+        if (!window.CROC_DATA) {
+          window.CROC_DATA = { products: [] };
+        }
+        window.CROC_DATA.products.push(newKit);
+        
+        // Guardar en localStorage
+        localStorage.setItem('crocconData', JSON.stringify(window.CROC_DATA));
+        
+        loadKits();
+        closeModal('addKitModal');
+        form.reset();
+        alert('Kit agregado correctamente');
+      }
+
+      function editKit(kitId) {
+        const kits = window.CROC_DATA ? window.CROC_DATA.products : [];
+        const kit = kits.find(k => k.id === kitId);
+        if (!kit) return;
+
+        // Llenar el formulario de edición
+        document.getElementById('editKitId').value = kit.id;
+        document.getElementById('editKitName').value = kit.name;
+        document.getElementById('editKitDescription').value = kit.description || '';
+        document.getElementById('editKitPrice').value = kit.price;
+        document.getElementById('editKitCategory').value = kit.category;
+        document.getElementById('editKitPassword').value = kit.password;
+        document.getElementById('editKitImage').value = kit.img;
+        document.getElementById('editKitVideo').value = kit.video || '';
+        
+        // Mostrar el modal
+        document.getElementById('editKitModal').classList.add('show');
+      }
+
+      function saveKitEdit() {
+        const form = document.getElementById('editKitForm');
+        const formData = new FormData(form);
+        
+        const kitId = formData.get('id');
+        const name = formData.get('name').trim();
+        const description = formData.get('description').trim();
+        const price = parseFloat(formData.get('price'));
+        const category = formData.get('category');
+        const password = formData.get('password').trim();
+        const img = formData.get('img').trim();
+        const video = formData.get('video').trim();
+        
+        if (!name || !description || !price || !category || !password || !img) {
+          alert('Por favor completa todos los campos requeridos');
+          return;
+        }
+        
+        const kits = window.CROC_DATA ? window.CROC_DATA.products : [];
+        const kitIndex = kits.findIndex(k => k.id === kitId);
+        if (kitIndex !== -1) {
+          kits[kitIndex].name = name;
+          kits[kitIndex].description = description;
+          kits[kitIndex].price = price;
+          kits[kitIndex].category = category;
+          kits[kitIndex].password = password;
+          kits[kitIndex].img = img;
+          kits[kitIndex].video = video || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+          
+          localStorage.setItem('crocconData', JSON.stringify(window.CROC_DATA));
+          loadKits();
+          closeModal('editKitModal');
+          alert('Kit actualizado correctamente');
+        }
+      }
+
+      function deleteKit(kitId) {
+        if (confirm('¿Estás seguro de que quieres eliminar este kit?')) {
+          const kits = window.CROC_DATA ? window.CROC_DATA.products : [];
+          const filteredKits = kits.filter(k => k.id !== kitId);
+          window.CROC_DATA.products = filteredKits;
+          
+          localStorage.setItem('crocconData', JSON.stringify(window.CROC_DATA));
+          loadKits();
+          alert('Kit eliminado correctamente');
+        }
+      }
+
+      function exportStudents() {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const students = users.filter(u => u.role === 'estudiante');
+        
+        const csv = [
+          ['Nombre', 'Email', 'Millas', 'Estado'],
+          ...students.map(s => [s.name, s.email, s.miles || 0, 'Activo'])
+        ].map(row => row.join(',')).join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'estudiantes.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function exportKits() {
+        const kits = window.CROC_DATA ? window.CROC_DATA.products : [];
+        
+        const csv = [
+          ['Nombre', 'Categoría', 'Precio', 'Contraseña', 'Estado'],
+          ...kits.map(k => [k.name, k.category, k.price, k.password, 'Disponible'])
+        ].map(row => row.join(',')).join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'kits.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // Funciones para gestión de premios
+      function showAddRewardForm() {
+        document.getElementById('addRewardModal').classList.add('show');
+      }
+
+      function loadRewards() {
+        const rewards = JSON.parse(localStorage.getItem('physicalRewards') || '[]');
+        
+        const tbody = document.getElementById('rewardsTableBody');
+        tbody.innerHTML = rewards.map(reward => `
+          <tr>
+            <td style="font-size: 24px; text-align: center;">${reward.image}</td>
+            <td>${reward.name}</td>
+            <td>${reward.description}</td>
+            <td>${reward.cost}</td>
+            <td>${reward.stock}</td>
+            <td><span class="status ${reward.stock > 0 ? 'active' : 'rechazado'}">${reward.stock > 0 ? 'Disponible' : 'Agotado'}</span></td>
+            <td>
+              <button class="btn btn-sm" onclick="editReward('${reward.id}')">Editar</button>
+              <button class="btn btn-sm btn-outline" onclick="deleteReward('${reward.id}')">Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function saveNewReward() {
+        const form = document.getElementById('addRewardForm');
+        const formData = new FormData(form);
+        
+        const newReward = {
+          id: 'reward-' + Date.now().toString(),
+          name: formData.get('name').trim(),
+          description: formData.get('description').trim(),
+          cost: parseInt(formData.get('cost')),
+          stock: parseInt(formData.get('stock')),
+          image: formData.get('image').trim()
+        };
+
+        if (!newReward.name || !newReward.description || !newReward.cost || newReward.stock < 0) {
+          alert('Por favor completa todos los campos correctamente');
+          return;
+        }
+
+        const rewards = JSON.parse(localStorage.getItem('physicalRewards') || '[]');
+        rewards.push(newReward);
+        localStorage.setItem('physicalRewards', JSON.stringify(rewards));
+        
+        loadRewards();
+        closeModal('addRewardModal');
+        form.reset();
+        alert('Premio agregado correctamente');
+      }
+
+      function editReward(rewardId) {
+        console.log('Editando premio:', rewardId);
+        const rewards = JSON.parse(localStorage.getItem('physicalRewards') || '[]');
+        const reward = rewards.find(r => r.id === rewardId);
+        console.log('Premio encontrado:', reward);
+        
+        if (!reward) {
+          alert('Error: No se encontró el premio a editar');
+          return;
+        }
+
+        // Llenar el formulario de edición
+        document.getElementById('editRewardId').value = reward.id;
+        document.getElementById('editRewardName').value = reward.name;
+        document.getElementById('editRewardDescription').value = reward.description;
+        document.getElementById('editRewardCost').value = reward.cost;
+        document.getElementById('editRewardStock').value = reward.stock;
+        document.getElementById('editRewardImage').value = reward.image;
+        
+        // Mostrar el modal
+        const modal = document.getElementById('editRewardModal');
+        console.log('Modal encontrado:', modal);
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+        console.log('Modal mostrado');
+      }
+
+      function saveRewardEdit() {
+        const form = document.getElementById('editRewardForm');
+        const formData = new FormData(form);
+        
+        const rewardId = formData.get('id');
+        const name = formData.get('name').trim();
+        const description = formData.get('description').trim();
+        const cost = parseInt(formData.get('cost'));
+        const stock = parseInt(formData.get('stock'));
+        const image = formData.get('image').trim();
+        
+        if (!name || !description || isNaN(cost) || isNaN(stock) || cost <= 0 || stock < 0) {
+          alert('Por favor completa todos los campos correctamente');
+          return;
+        }
+        
+        const rewards = JSON.parse(localStorage.getItem('physicalRewards') || '[]');
+        const rewardIndex = rewards.findIndex(r => r.id === rewardId);
+        if (rewardIndex !== -1) {
+          rewards[rewardIndex].name = name;
+          rewards[rewardIndex].description = description;
+          rewards[rewardIndex].cost = cost;
+          rewards[rewardIndex].stock = stock;
+          rewards[rewardIndex].image = image;
+          
+          localStorage.setItem('physicalRewards', JSON.stringify(rewards));
+          loadRewards();
+          closeModal('editRewardModal');
+          alert('Premio actualizado correctamente');
+        } else {
+          alert('Error: No se encontró el premio a editar');
+        }
+      }
+
+      function deleteReward(rewardId) {
+        if (confirm('¿Estás seguro de que quieres eliminar este premio?')) {
+          const rewards = JSON.parse(localStorage.getItem('physicalRewards') || '[]');
+          const filteredRewards = rewards.filter(r => r.id !== rewardId);
+          
+          localStorage.setItem('physicalRewards', JSON.stringify(filteredRewards));
+          loadRewards();
+          alert('Premio eliminado correctamente');
+        }
+      }
+
+      function exportRewards() {
+        const rewards = JSON.parse(localStorage.getItem('physicalRewards') || '[]');
+        
+        const csv = [
+          ['Nombre', 'Descripción', 'Costo (Millas)', 'Stock', 'Estado'],
+          ...rewards.map(r => [r.name, r.description, r.cost, r.stock, r.stock > 0 ? 'Disponible' : 'Agotado'])
+        ].map(row => row.join(',')).join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'premios.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // Funciones para gestión de accesos a kits
+
+      function viewKitAccess(kitId, kitName) {
+        let kitAccess = JSON.parse(localStorage.getItem('kitAccess') || '[]');
+        let kitAccesses = kitAccess.filter(access => access.kitId === kitId);
+        
+        // Si no hay accesos, agregar datos de ejemplo
+        if (kitAccesses.length === 0) {
+          const sampleAccesses = generateSampleAccesses(kitId, kitName);
+          kitAccess = [...kitAccess, ...sampleAccesses];
+          localStorage.setItem('kitAccess', JSON.stringify(kitAccess));
+          kitAccesses = sampleAccesses;
+        }
+        
+        // Crear modal mejorado
+        const modalHtml = `
+          <div class="modal-backdrop show" id="kitAccessModal">
+            <div class="modal kit-access-modal">
+              <div class="modal-header">
+                <div class="modal-title">
+                  <div class="kit-icon">🤖</div>
+                  <div>
+                    <h3>Accesos al Kit</h3>
+                    <p class="kit-name">${kitName}</p>
+                  </div>
+                </div>
+                <button class="close-btn" onclick="closeModal('kitAccessModal')">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="kit-access-list">
+                  <div class="access-summary">
+                    <div class="summary-stats">
+                      <div class="stat-item">
+                        <span class="stat-number">${kitAccesses.length}</span>
+                        <span class="stat-label">Total Accesos</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="stat-number">${new Set(kitAccesses.map(a => a.studentEmail)).size}</span>
+                        <span class="stat-label">Usuarios Únicos</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="stat-number">${getRecentAccesses(kitAccesses)}</span>
+                        <span class="stat-label">Últimos 7 días</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="access-filters">
+                    <div class="filter-group">
+                      <label>Ordenar por:</label>
+                      <select id="sortAccess" onchange="sortAccesses()">
+                        <option value="recent">Más recientes</option>
+                        <option value="oldest">Más antiguos</option>
+                        <option value="student">Por estudiante</option>
+                      </select>
+                    </div>
+                    <div class="filter-group">
+                      <label>Buscar:</label>
+                      <input type="text" id="searchAccess" placeholder="Nombre o email..." onkeyup="filterAccesses()">
+                    </div>
+                  </div>
+                  
+                  <div class="access-items" id="accessItems">
+                    ${kitAccesses.map(access => `
+                      <div class="access-item" data-student="${access.studentName.toLowerCase()}" data-email="${access.studentEmail.toLowerCase()}">
+                        <div class="access-header">
+                          <div class="student-info">
+                            <div class="student-avatar">${getInitials(access.studentName)}</div>
+                            <div class="student-details">
+                              <strong>${access.studentName || 'Usuario no identificado'}</strong>
+                              <span class="access-email">${access.studentEmail || 'N/A'}</span>
+                            </div>
+                          </div>
+                          <div class="access-time">
+                            <span class="time-icon">🕒</span>
+                            <span>${access.accessDate}</span>
+                          </div>
+                        </div>
+                        <div class="access-details">
+                          <div class="detail-item">
+                            <span class="detail-icon">🔑</span>
+                            <div class="detail-content">
+                              <span class="label">Contraseña usada</span>
+                              <code>${access.passwordUsed}</code>
+                            </div>
+                          </div>
+                          <div class="detail-item">
+                            <span class="detail-icon">📱</span>
+                            <div class="detail-content">
+                              <span class="label">Dispositivo</span>
+                              <span>${getDeviceType(access.deviceInfo)}</span>
+                            </div>
+                          </div>
+                          <div class="detail-item">
+                            <span class="detail-icon">🌐</span>
+                            <div class="detail-content">
+                              <span class="label">IP/Info</span>
+                              <span class="device-info">${access.deviceInfo || 'N/A'}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+              <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('kitAccessModal')">Cerrar</button>
+                <button class="btn" onclick="exportKitAccessById('${kitId}', '${kitName}')">
+                  📊 Exportar Accesos
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Insertar modal en el DOM
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      }
+
+      // Funciones auxiliares para el modal de accesos
+      function generateSampleAccesses(kitId, kitName) {
+        const sampleStudents = [
+          { name: 'María González', email: 'maria.gonzalez@email.com' },
+          { name: 'Carlos Rodríguez', email: 'carlos.rodriguez@email.com' },
+          { name: 'Ana Martínez', email: 'ana.martinez@email.com' },
+          { name: 'Luis Fernández', email: 'luis.fernandez@email.com' },
+          { name: 'Sofia López', email: 'sofia.lopez@email.com' }
+        ];
+        
+        const passwords = ['KIT123', 'ARDUINO2024', 'ROBOT001', 'CROCCON2024', 'KIT456'];
+        const devices = [
+          'Chrome/Windows 10',
+          'Safari/macOS',
+          'Firefox/Windows 11',
+          'Chrome/Android',
+          'Edge/Windows 10'
+        ];
+        
+        const now = new Date();
+        const sampleAccesses = [];
+        
+        for (let i = 0; i < 5; i++) {
+          const student = sampleStudents[i];
+          const daysAgo = Math.floor(Math.random() * 30);
+          const accessDate = new Date(now.getTime() - (daysAgo * 24 * 60 * 60 * 1000));
+          
+          sampleAccesses.push({
+            id: Date.now().toString() + i,
+            kitId: kitId,
+            kitName: kitName,
+            passwordUsed: passwords[i],
+            studentName: student.name,
+            studentEmail: student.email,
+            accessDate: accessDate.toLocaleString('es-ES'),
+            deviceInfo: devices[i],
+            timestamp: accessDate.toISOString()
+          });
+        }
+        
+        return sampleAccesses;
+      }
+
+      function getInitials(name) {
+        return name.split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+
+      function getDeviceType(deviceInfo) {
+        if (deviceInfo.includes('Chrome')) return 'Chrome';
+        if (deviceInfo.includes('Safari')) return 'Safari';
+        if (deviceInfo.includes('Firefox')) return 'Firefox';
+        if (deviceInfo.includes('Edge')) return 'Edge';
+        if (deviceInfo.includes('Android')) return 'Android';
+        return 'Otro';
+      }
+
+      function getRecentAccesses(accesses) {
+        const weekAgo = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000));
+        return accesses.filter(access => new Date(access.timestamp) > weekAgo).length;
+      }
+
+      function sortAccesses() {
+        const sortBy = document.getElementById('sortAccess').value;
+        const accessItems = document.getElementById('accessItems');
+        const items = Array.from(accessItems.children);
+        
+        items.sort((a, b) => {
+          switch(sortBy) {
+            case 'recent':
+              return new Date(b.dataset.timestamp) - new Date(a.dataset.timestamp);
+            case 'oldest':
+              return new Date(a.dataset.timestamp) - new Date(b.dataset.timestamp);
+            case 'student':
+              return a.dataset.student.localeCompare(b.dataset.student);
+            default:
+              return 0;
+          }
+        });
+        
+        accessItems.innerHTML = '';
+        items.forEach(item => accessItems.appendChild(item));
+      }
+
+      function filterAccesses() {
+        const searchTerm = document.getElementById('searchAccess').value.toLowerCase();
+        const accessItems = document.querySelectorAll('.access-item');
+        
+        accessItems.forEach(item => {
+          const student = item.dataset.student;
+          const email = item.dataset.email;
+          const matches = student.includes(searchTerm) || email.includes(searchTerm);
+          item.style.display = matches ? 'block' : 'none';
+        });
+      }
+
+      function exportKitAccessById(kitId, kitName) {
+        const kitAccess = JSON.parse(localStorage.getItem('kitAccess') || '[]');
+        const kitAccesses = kitAccess.filter(access => access.kitId === kitId);
+        
+        const csv = [
+          ['Estudiante', 'Email', 'Kit', 'Contraseña Usada', 'Fecha de Acceso', 'Dispositivo', 'Estado'],
+          ...kitAccesses.map(a => [a.studentName || 'N/A', a.studentEmail || 'N/A', a.kitName, a.passwordUsed, a.accessDate, a.deviceInfo || 'N/A', 'Accedido'])
+        ].map(row => row.join(',')).join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `accesos_${kitName.replace(/\s+/g, '_')}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
       
       function editStudent(studentId) {
         const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const s = users.find(u => u.id === studentId);
-        if (!s) return;
-        document.getElementById('editId').value = s.id;
-        document.getElementById('editName').value = s.name;
-        document.getElementById('editEmail').value = s.email;
-        document.getElementById('editMiles').value = s.miles || 0;
-        document.getElementById('editModal').classList.add('show');
+        const student = users.find(u => u.id === studentId);
+        if (!student) return;
+
+        // Llenar el formulario de edición
+        document.getElementById('editStudentId').value = student.id;
+        document.getElementById('editStudentName').value = student.name;
+        document.getElementById('editStudentEmail').value = student.email;
+        document.getElementById('editStudentPassword').value = ''; // Dejar vacío para mantener la actual
+        document.getElementById('editStudentMiles').value = student.miles || 0;
+        document.getElementById('editStudentStatus').value = student.status || 'activo';
+        
+        // Mostrar el modal
+        document.getElementById('editStudentModal').classList.add('show');
       }
 
-      function closeEditModal(){
-        document.getElementById('editModal').classList.remove('show');
-      }
+      function saveStudentEdit() {
+        const form = document.getElementById('editStudentForm');
+        const formData = new FormData(form);
+        
+        const studentId = formData.get('id');
+        const name = formData.get('name').trim();
+        const email = formData.get('email').trim();
+        const password = formData.get('password').trim();
+        const miles = parseInt(formData.get('miles')) || 0;
+        const status = formData.get('status');
+        
+        if (!name || !email) {
+          alert('Por favor completa todos los campos requeridos');
+          return;
+        }
 
-      function saveStudentEdits(){
-        const id = document.getElementById('editId').value;
-        const name = document.getElementById('editName').value.trim();
-        const email = document.getElementById('editEmail').value.trim();
-        const miles = parseInt(document.getElementById('editMiles').value,10) || 0;
-        if(!name || !email){ alert('Completa nombre y email'); return; }
+        if (password && password.length < 6) {
+          alert('La contraseña debe tener al menos 6 caracteres');
+          return;
+        }
+        
         const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const idx = users.findIndex(u => u.id === id);
-        if (idx === -1) return;
-        users[idx] = { ...users[idx], name, email, miles };
-        localStorage.setItem('users', JSON.stringify(users));
-        loadStudents();
-        closeEditModal();
-        alert('Estudiante actualizado');
+        const userIndex = users.findIndex(u => u.id === studentId);
+        if (userIndex !== -1) {
+          users[userIndex].name = name;
+          users[userIndex].email = email;
+          users[userIndex].username = email;
+          users[userIndex].miles = miles;
+          users[userIndex].status = status;
+          
+          // Solo actualizar contraseña si se proporcionó una nueva
+          if (password) {
+            users[userIndex].password = password;
+          }
+          
+          localStorage.setItem('users', JSON.stringify(users));
+          loadStudents();
+          closeModal('editStudentModal');
+          alert('Estudiante actualizado correctamente');
+        }
       }
       
       function viewStudent(studentId) {
@@ -482,31 +1058,6 @@
         window.location.href = 'login.html';
       }
       
-      // Función global para logout desde el header
-      window.logout = logout;
-      
-      // Formulario de contenido
-      const contentFormEl = document.getElementById('contentForm');
-      if (contentFormEl) {
-        contentFormEl.addEventListener('submit', function(e) {
-          e.preventDefault();
-          const content = {
-            id: Date.now().toString(),
-            type: document.getElementById('contentType').value,
-            title: document.getElementById('contentTitle').value,
-            description: document.getElementById('contentDescription').value,
-            url: document.getElementById('contentUrl').value,
-            date: new Date().toLocaleString('es-ES'),
-            kitId: document.getElementById('contentKit').value
-          };
-          const contents = JSON.parse(localStorage.getItem('content') || '[]');
-          contents.push(content);
-          localStorage.setItem('content', JSON.stringify(contents));
-          alert('Contenido subido correctamente');
-          loadContent();
-          this.reset();
-        });
-      }
 
       // Manejar submit del modal de edición
       const editFormEl = document.getElementById('editStudentForm');
@@ -517,15 +1068,269 @@
         });
       }
 
-      // Poblar select de kits
-      (function fillKits(){
-        const select = document.getElementById('contentKit');
-        if (!select || !window.CROC_DATA) return;
-        window.CROC_DATA.products.forEach(p => {
-          const opt = document.createElement('option');
-          opt.value = p.id; opt.textContent = p.name; select.appendChild(opt);
-        });
-      })();
     </script>
+
+    <!-- Modal para agregar estudiante -->
+    <div class="modal-backdrop" id="addStudentModal">
+      <div class="modal">
+        <header>
+          <h3>Agregar Nuevo Estudiante</h3>
+          <button class="close-btn" onclick="closeModal('addStudentModal')">×</button>
+        </header>
+        <div class="modal-body">
+          <form id="addStudentForm">
+            <div class="form-group">
+              <label for="studentName">Nombre Completo</label>
+              <input type="text" id="studentName" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="studentEmail">Email</label>
+              <input type="email" id="studentEmail" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="studentPassword">Contraseña</label>
+              <input type="password" id="studentPassword" name="password" required placeholder="Mínimo 6 caracteres">
+            </div>
+            <div class="form-group">
+              <label for="studentMiles">Millas Iniciales</label>
+              <input type="number" id="studentMiles" name="miles" value="0" min="0">
+            </div>
+            <div class="form-group">
+              <label for="studentStatus">Estado</label>
+              <select id="studentStatus" name="status">
+                <option value="activo">Activo</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal('addStudentModal')">Cancelar</button>
+          <button class="btn" onclick="saveNewStudent()">Guardar Estudiante</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para agregar kit -->
+    <div class="modal-backdrop" id="addKitModal">
+      <div class="modal">
+        <header>
+          <h3>Agregar Nuevo Kit</h3>
+          <button class="close-btn" onclick="closeModal('addKitModal')">×</button>
+        </header>
+        <div class="modal-body">
+          <form id="addKitForm">
+            <div class="form-group">
+              <label for="kitName">Nombre del Kit</label>
+              <input type="text" id="kitName" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="kitDescription">Descripción</label>
+              <textarea id="kitDescription" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="kitPrice">Precio</label>
+              <input type="number" id="kitPrice" name="price" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label for="kitCategory">Categoría</label>
+              <select id="kitCategory" name="category" required>
+                <option value="principiante">Principiante</option>
+                <option value="intermedio">Intermedio</option>
+                <option value="avanzado">Avanzado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="kitPassword">Contraseña</label>
+              <input type="text" id="kitPassword" name="password" required>
+            </div>
+            <div class="form-group">
+              <label for="kitImage">URL de Imagen</label>
+              <input type="url" id="kitImage" name="img" required>
+            </div>
+            <div class="form-group">
+              <label for="kitVideo">URL de Video (opcional)</label>
+              <input type="url" id="kitVideo" name="video">
+            </div>
+          </form>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal('addKitModal')">Cancelar</button>
+          <button class="btn" onclick="saveNewKit()">Guardar Kit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para editar estudiante -->
+    <div class="modal-backdrop" id="editStudentModal">
+      <div class="modal">
+        <header>
+          <h3>Editar Estudiante</h3>
+          <button class="close-btn" onclick="closeModal('editStudentModal')">×</button>
+        </header>
+        <div class="modal-body">
+          <form id="editStudentForm">
+            <input type="hidden" id="editStudentId" name="id">
+            <div class="form-group">
+              <label for="editStudentName">Nombre Completo</label>
+              <input type="text" id="editStudentName" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="editStudentEmail">Email</label>
+              <input type="email" id="editStudentEmail" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="editStudentPassword">Contraseña</label>
+              <input type="password" id="editStudentPassword" name="password" placeholder="Dejar vacío para mantener la actual">
+            </div>
+            <div class="form-group">
+              <label for="editStudentMiles">Millas</label>
+              <input type="number" id="editStudentMiles" name="miles" min="0">
+            </div>
+            <div class="form-group">
+              <label for="editStudentStatus">Estado</label>
+              <select id="editStudentStatus" name="status">
+                <option value="activo">Activo</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal('editStudentModal')">Cancelar</button>
+          <button class="btn" onclick="saveStudentEdit()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para editar kit -->
+    <div class="modal-backdrop" id="editKitModal">
+      <div class="modal">
+        <header>
+          <h3>Editar Kit</h3>
+          <button class="close-btn" onclick="closeModal('editKitModal')">×</button>
+        </header>
+        <div class="modal-body">
+          <form id="editKitForm">
+            <input type="hidden" id="editKitId" name="id">
+            <div class="form-group">
+              <label for="editKitName">Nombre del Kit</label>
+              <input type="text" id="editKitName" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="editKitDescription">Descripción</label>
+              <textarea id="editKitDescription" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="editKitPrice">Precio</label>
+              <input type="number" id="editKitPrice" name="price" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label for="editKitCategory">Categoría</label>
+              <select id="editKitCategory" name="category" required>
+                <option value="principiante">Principiante</option>
+                <option value="intermedio">Intermedio</option>
+                <option value="avanzado">Avanzado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editKitPassword">Contraseña</label>
+              <input type="text" id="editKitPassword" name="password" required>
+            </div>
+            <div class="form-group">
+              <label for="editKitImage">URL de Imagen</label>
+              <input type="url" id="editKitImage" name="img" required>
+            </div>
+            <div class="form-group">
+              <label for="editKitVideo">URL de Video (opcional)</label>
+              <input type="url" id="editKitVideo" name="video">
+            </div>
+          </form>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal('editKitModal')">Cancelar</button>
+          <button class="btn" onclick="saveKitEdit()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para agregar premio -->
+    <div class="modal-backdrop" id="addRewardModal">
+      <div class="modal">
+        <header>
+          <h3>Agregar Nuevo Premio</h3>
+          <button class="close-btn" onclick="closeModal('addRewardModal')">×</button>
+        </header>
+        <div class="modal-body">
+          <form id="addRewardForm">
+            <div class="form-group">
+              <label for="rewardName">Nombre del Premio</label>
+              <input type="text" id="rewardName" name="name" required placeholder="Ej: Camiseta Croccon">
+            </div>
+            <div class="form-group">
+              <label for="rewardDescription">Descripción</label>
+              <input type="text" id="rewardDescription" name="description" required placeholder="Ej: Camiseta 100% algodón">
+            </div>
+            <div class="form-group">
+              <label for="rewardCost">Costo en Millas</label>
+              <input type="number" id="rewardCost" name="cost" required placeholder="200" min="1">
+            </div>
+            <div class="form-group">
+              <label for="rewardStock">Stock Disponible</label>
+              <input type="number" id="rewardStock" name="stock" required placeholder="10" min="0">
+            </div>
+            <div class="form-group">
+              <label for="rewardImage">Emoji/Icono</label>
+              <input type="text" id="rewardImage" name="image" required placeholder="👕" maxlength="2">
+            </div>
+          </form>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal('addRewardModal')">Cancelar</button>
+          <button class="btn" onclick="saveNewReward()">Guardar Premio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para editar premio -->
+    <div class="modal-backdrop" id="editRewardModal">
+      <div class="modal">
+        <header>
+          <h3>Editar Premio</h3>
+          <button class="close-btn" onclick="closeModal('editRewardModal')">×</button>
+        </header>
+        <div class="modal-body">
+          <form id="editRewardForm">
+            <input type="hidden" id="editRewardId" name="id">
+            <div class="form-group">
+              <label for="editRewardName">Nombre del Premio</label>
+              <input type="text" id="editRewardName" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="editRewardDescription">Descripción</label>
+              <input type="text" id="editRewardDescription" name="description" required>
+            </div>
+            <div class="form-group">
+              <label for="editRewardCost">Costo en Millas</label>
+              <input type="number" id="editRewardCost" name="cost" required min="1">
+            </div>
+            <div class="form-group">
+              <label for="editRewardStock">Stock Disponible</label>
+              <input type="number" id="editRewardStock" name="stock" required min="0">
+            </div>
+            <div class="form-group">
+              <label for="editRewardImage">Emoji/Icono</label>
+              <input type="text" id="editRewardImage" name="image" required maxlength="2">
+            </div>
+          </form>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeModal('editRewardModal')">Cancelar</button>
+          <button class="btn" onclick="saveRewardEdit()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

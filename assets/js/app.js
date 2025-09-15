@@ -123,7 +123,7 @@
   }
 
   // Normalizar header según sesión/rol
-  function setupHeaderByRole(){
+  (function setupHeaderByRole(){
     const nav = $('#mainNav');
     const currentUserLocal = JSON.parse(localStorage.getItem('currentUser') || 'null');
     if (!nav) return;
@@ -230,23 +230,6 @@
       }
     }
   }
-  
-  // Hacer la función globalmente disponible
-  window.setupHeaderByRole = setupHeaderByRole;
 })();
-
-// Ejecutar setupHeaderByRole cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded, setting up header...');
-  // Pequeño delay para asegurar que todo esté cargado
-  setTimeout(function() {
-    if (typeof window.setupHeaderByRole === 'function') {
-      window.setupHeaderByRole();
-      console.log('Header setup completed');
-    } else {
-      console.error('setupHeaderByRole function not found');
-    }
-  }, 100);
-});
 
 

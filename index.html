@@ -74,6 +74,29 @@
               Con nuestro sistema de millas, cada logro suma puntos que luego pueden
               canjearse por recompensas físicas.
             </p>
+            <div class="impacto-features">
+              <div class="feature-item">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-text">
+                  <strong>Proyectos Prácticos</strong>
+                  <span>Construye robots reales desde el primer día</span>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-text">
+                  <strong>Sistema de Millas</strong>
+                  <span>Gana puntos y canjea recompensas</span>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">👥</div>
+                <div class="feature-text">
+                  <strong>Comunidad Activa</strong>
+                  <span>Aprende junto a otros estudiantes</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="impacto-cards">
             <div class="tile">En Cursos</div>
@@ -96,8 +119,11 @@
       <section class="tienda-preview">
         <div class="container">
           <div class="section-head">
-            <h3>Nuestros Kits</h3>
-            <a href="tienda.html" class="link">Ver Tienda</a>
+            <div>
+              <h3>Nuestros Kits de Robótica</h3>
+              <p class="section-subtitle">Explora nuestra colección de kits educativos diseñados para todos los niveles</p>
+            </div>
+            <a href="tienda.html" class="btn btn-outline">Ver Catálogo Completo</a>
           </div>
           <div class="products" id="homeProducts"></div>
         </div>
@@ -105,32 +131,72 @@
 
       <!-- Comunidad -->
       <section class="comunidad">
-        <div class="container grid-comunidad">
-          <div>
+        <div class="container">
+          <div class="comunidad-header">
             <h3>Únete a nuestra comunidad</h3>
+            <p>Conecta con otros estudiantes, comparte proyectos y mantente al día con las últimas novedades</p>
           </div>
-          <div class="c-tile"></div>
-          <div class="c-tile"></div>
-          <div class="c-tile text">Nuestro equipo trabaja para crear impacto</div>
-          <div class="c-tile"></div>
-          <div class="c-tile text">Recibe novedades y materiales</div>
+          <div class="grid-comunidad">
+            <div class="c-tile text">
+              <div class="tile-content">
+                <span class="tile-icon">🤖</span>
+                <h4>Proyectos</h4>
+                <p>Comparte tus creaciones</p>
+              </div>
+            </div>
+            <div class="c-tile text">
+              <div class="tile-content">
+                <span class="tile-icon">🏆</span>
+                <h4>Competencias</h4>
+                <p>Participa en desafíos</p>
+              </div>
+            </div>
+            <div class="c-tile text">
+              <div class="tile-content">
+                <span class="tile-icon">👥</span>
+                <h4>Colaboración</h4>
+                <p>Trabaja en equipo</p>
+              </div>
+            </div>
+            <div class="c-tile text">
+              <div class="tile-content">
+                <span class="tile-icon">📚</span>
+                <h4>Recursos</h4>
+                <p>Accede a materiales</p>
+              </div>
+            </div>
+          </div>
+          <div class="newsletter">
+            <div class="newsletter-content">
+              <h4>Mantente actualizado</h4>
+              <p>Recibe las últimas novedades, tutoriales y oportunidades de la academia</p>
+            </div>
+            <form class="newsletter-inputs" id="newsletterForm">
+              <input type="email" placeholder="Ingresa tu email" required />
+              <button class="btn" type="submit">Suscribirme</button>
+            </form>
+          </div>
         </div>
-        <form class="newsletter container" id="newsletterForm">
-          <input type="email" placeholder="Ingresa tu email" required />
-          <button class="btn btn-sm" type="submit">Suscribirme</button>
-        </form>
       </section>
     </main>
 
     <footer class="footer">
       <div class="container foot-grid">
         <div>
-          <strong>Croccon</strong>
-          <p>Buy One. Plant one.</p>
+          <strong>Croccon Academia de Robótica</strong>
+          <p>Desarrollando el futuro, un robot a la vez</p>
         </div>
-        <div class="right">
-          <span>Síguenos</span>
-          <div class="dots"></div>
+        <div class="footer-links">
+          <a href="index.html">Inicio</a>
+          <a href="tienda.html">Kits</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html">Contacto</a>
+        </div>
+        <div class="social-dots">
+          <span>🤖</span>
+          <span>⚡</span>
+          <span>🔧</span>
+          <span>💡</span>
         </div>
       </div>
     </footer>

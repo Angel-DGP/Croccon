@@ -194,6 +194,10 @@
         const ctx = canvas.getContext('2d');
         ctx.scale(dpr,dpr);
         
+        // Detectar si es móvil
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 480;
+        
         // Limpiar canvas
         ctx.clearRect(0,0,rect.width,rect.height);
         
@@ -281,7 +285,7 @@
         
         // Dibujar carretera principal
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 12;
+        ctx.lineWidth = isSmallMobile ? 8 : (isMobile ? 10 : 12);
         ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(0.05 * rect.width, 0.5 * rect.height);
@@ -292,8 +296,8 @@
         
         // Dibujar líneas de la carretera
         ctx.strokeStyle = '#ffd700';
-        ctx.lineWidth = 4;
-        ctx.setLineDash([15, 15]);
+        ctx.lineWidth = isSmallMobile ? 2 : (isMobile ? 3 : 4);
+        ctx.setLineDash(isSmallMobile ? [8, 8] : (isMobile ? [12, 12] : [15, 15]));
         ctx.beginPath();
         ctx.moveTo(0.05 * rect.width, 0.5 * rect.height);
         ctx.quadraticCurveTo(0.2 * rect.width, 0.4 * rect.height, 0.4 * rect.width, 0.5 * rect.height);
@@ -306,7 +310,7 @@
         unlockedMissions.forEach((mission, index) => {
           const x = mission.x * rect.width;
           const y = mission.y * rect.height;
-          const size = 25;
+          const size = isSmallMobile ? 15 : (isMobile ? 20 : 25);
           
           // Halo de la estación
           const halo = ctx.createRadialGradient(x, y, 0, x, y, size * 2.5);
@@ -327,25 +331,27 @@
           
           // Borde de la estación
           ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 4;
+          ctx.lineWidth = isSmallMobile ? 2 : (isMobile ? 3 : 4);
           ctx.beginPath();
           ctx.arc(x, y, size, 0, Math.PI * 2);
           ctx.stroke();
           
           // Icono de la misión
           ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 20px Arial';
+          ctx.font = isSmallMobile ? 'bold 12px Arial' : (isMobile ? 'bold 16px Arial' : 'bold 20px Arial');
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(mission.icon, x, y);
           
-          // Nombre de la misión
-          ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 14px Poppins';
-          ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 3;
-          ctx.strokeText(mission.name, x, y - size - 12);
-          ctx.fillText(mission.name, x, y - size - 12);
+          // Nombre de la misión (solo en pantallas grandes)
+          if (!isSmallMobile) {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = isMobile ? 'bold 10px Poppins' : 'bold 14px Poppins';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = isMobile ? 2 : 3;
+            ctx.strokeText(mission.name, x, y - size - 12);
+            ctx.fillText(mission.name, x, y - size - 12);
+          }
         });
         
         // Dibujar próxima misión (si existe)
