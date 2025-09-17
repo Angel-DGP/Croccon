@@ -66,6 +66,17 @@
     <script>
       // Lógica específica de la tienda
       document.addEventListener('DOMContentLoaded', function() {
+        // Hidratación defensiva de datos para despliegues estáticos (ej. Netlify)
+        try {
+          var stored = localStorage.getItem('crocconData');
+          if (!window.CROC_DATA && stored) {
+            window.CROC_DATA = JSON.parse(stored);
+          }
+        } catch (e) { /* noop */ }
+        if (!window.CROC_DATA) {
+          window.CROC_DATA = { products: [] };
+        }
+
         const productsGrid = document.getElementById('productsGrid');
         const filterBtns = document.querySelectorAll('.filter-btn');
         
@@ -114,9 +125,7 @@
         });
         
         // Cargar productos iniciales
-        if (window.CROC_DATA) {
-          renderProducts(window.CROC_DATA.products);
-        }
+        renderProducts(window.CROC_DATA.products || []);
       });
       
       function viewProduct(productId) {

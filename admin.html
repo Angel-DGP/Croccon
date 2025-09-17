@@ -232,6 +232,17 @@
     <script src="assets/js/app.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        // Hidratación defensiva de datos (evita fallos por orden de scripts en Netlify)
+        try {
+          var stored = localStorage.getItem('crocconData');
+          if (!window.CROC_DATA && stored) {
+            window.CROC_DATA = JSON.parse(stored);
+          }
+        } catch (e) { /* noop */ }
+        if (!window.CROC_DATA) {
+          window.CROC_DATA = { products: [] };
+        }
+
         // Verificar autenticación de admin
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         if (!currentUser || currentUser.role !== 'admin') {

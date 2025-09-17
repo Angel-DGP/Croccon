@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirigiendo…</title>
+    <meta http-equiv="refresh" content="0; url=/index.html" />
+    <style>
+      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#0b1020;color:#fff}
+      .card{max-width:520px;padding:24px 28px;background:#121832;border:1px solid #1f2747;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+      h1{font-size:20px;margin:0 0 6px}
+      p{opacity:.9;margin:0 0 14px}
+      a{color:#7aa2ff;text-decoration:none}
+      small{opacity:.7}
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Esta página no existe</h1>
+      <p>Te estamos redirigiendo al inicio…</p>
+      <p><a href="/index.html">Ir al inicio</a></p>
+      <small>Si no ocurre nada, haz clic en el enlace.</small>
+    </div>
+    <script>
+      // Fallback por si el meta refresh es bloqueado
+      setTimeout(function(){
+        var target = '/index.html';
+        // Preserva la ruta solicitada como hash para apps estáticas
+        var path = window.location.pathname + window.location.search;
+        if (path && path !== '/' && !path.includes('index.html')) {
+          target += '#'+encodeURIComponent(path);
+        }
+        window.location.replace(target);
+      }, 0);
+    </script>
+  </body>
+</html>
+
+
